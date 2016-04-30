@@ -1,8 +1,6 @@
 # MinorNPCPortraitsforBGEE
 ===================================================================================================================
-===================================================================================================================
 WHAT IS IT?:
---------------------------------------------------------
 This mod adds small portraits to speaking NPCs in BG:EE.  The big world of Baldur's Gate gets even more beautiful! 
 The goal of this mod is to add small portraits to nearly all speaking NPC in the game.  
 
