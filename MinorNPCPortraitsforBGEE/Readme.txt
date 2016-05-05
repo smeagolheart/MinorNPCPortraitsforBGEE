@@ -40,7 +40,7 @@ Smeagol
 ===================================================================================================================
 Technical Details and how you can add your own portraits
 --------------------------------------------------------
-All pictures are either 169x266 up to 210x330.   
+All pictures are 169x266 or greater.   
 
 The table in (mod folder)\tbl\bgee.tbl lists the creatures/actors and portrait name.  
 You can reference the creature name to the actor in tools such as NearInfinity.
@@ -58,8 +58,8 @@ Thanks everyone you know who you are, I hope you appreciate the hard work of the
 
 Version History:
 
-V.01 29 Apr 16
-- Alpha release
+V.1.0 4 May 16
+- 1st Release
 ===================================================================================================================
 forum
 https://forums.beamdog.com/discussion/55237/mod-minor-npc-portraits-for-bgee
