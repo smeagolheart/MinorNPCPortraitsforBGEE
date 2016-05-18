@@ -31,13 +31,16 @@ BEGIN ~Minor NPC Portraits for BGEE~
 				ACTION_IF NOT FILE_EXISTS ~override\%Filename%.bmp~ THEN BEGIN
 					COPY ~%MOD_FOLDER%/portraits/%Filename%.bmp~ ~override~
 				END
+			END	ELSE BEGIN     // Re-use existing portraits, just update reference
+				COPY_EXISTING ~%Crename%.cre~ ~override~
+				WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
 			END
 		END
 	END
 	
 	PRINT ~Please be patient this may take a while...~
 	
-	//PRINT ~PHASE 1: 1 Creature, 1 Portrait~
+	LOG  ~PHASE 1: BGEE 1 Creature, 1 Portrait~
 	OUTER_SET rows_cnt_1=0
 	COPY - ~%MOD_FOLDER%/tbl/table1.tbl~  ~%MOD_FOLDER%/tbl/table1.tbl~
 		COUNT_2DA_ROWS 1 "rows_cnt_1"
@@ -48,7 +51,7 @@ BEGIN ~Minor NPC Portraits for BGEE~
 			END
 		END
 	
-	//PRINT ~PHASE 2: Multiple Creatures, 1 Portrait~
+	LOG  ~PHASE 2: BGEE Multiple Creatures, 1 Portrait~
 	OUTER_SET rows_cnt_2=0
 	COPY - ~%MOD_FOLDER%/tbl/table2.tbl~  ~%MOD_FOLDER%/tbl/table2.tbl~
 		COUNT_2DA_ROWS 1 "rows_cnt_2"
@@ -59,7 +62,18 @@ BEGIN ~Minor NPC Portraits for BGEE~
 					LAUNCH_ACTION_MACRO ~Addpic2~ 
 			END
 		END
-	
+
+	LOG ~PHASE 3: SOD 1 Creature, 1 Portrait~
+	OUTER_SET rows_cnt_3=0
+	COPY - ~%MOD_FOLDER%/tbl/table3.tbl~  ~%MOD_FOLDER%/tbl/table3.tbl~
+		COUNT_2DA_ROWS 1 "rows_cnt_3"
+			FOR( cntg=0; cntg<"%rows_cnt_3%"; cntg=cntg+1 ) BEGIN
+				READ_2DA_ENTRY cntg  0 1 "Crename"
+				INNER_ACTION BEGIN
+					LAUNCH_ACTION_MACRO ~Addpic~ 
+			END
+		END
+		
 	//Count them up :)
-	OUTER_SET s9total=~%rows_cnt_1%~+~%rows_cnt_2%~
+	OUTER_SET s9total=~%rows_cnt_1%~+~%rows_cnt_2%~+~%rows_cnt_3%~
 	PRINT ~PATCHED PORTRAITS FOR %s9total% ACTORS~
