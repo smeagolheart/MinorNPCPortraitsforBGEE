@@ -1,18 +1,28 @@
 # MinorNPCPortraitsforBGEE
 ===================================================================================================================
 WHAT IS IT?:
-This mod adds small portraits to speaking NPCs in BG:EE.  The big world of Baldur's Gate gets even more beautiful! 
+This mod adds small portraits to speaking NPCs in BG:EE including the Siege of Dragonspear exapansion.  
+The big world of Baldur's Gate gets even more beautiful!
 The goal of this mod is to add small portraits to nearly all speaking NPC in the game.  
 
 If any of the portraits are not to your satisfaction due to quality or you feel that the portrait does not
 match the in game NPC, report that as well for potential inclusion in future updates.  You will have to 
 start a new game to get the portraits on NPCs you've already met in game although future NPCs should have their
-portraits.  This mod patches over 300 creatures, future updates from Beamdog may require reinstallation of the mod if
-it modifies any of those characters.  Basically, if there is an update to the game, it's probably a good idea to reinstall this mod.
+portraits.  This mod patches over 600 creatures, future updates from Beamdog may require reinstallation of the mod if
+it modifies any of those characters.  Basically, if there is an update to the game, it's probably a good idea to reinstall 
+this mod.
+
+Due to the nature of the way the Infinity Engine handles things, if you install this mod on a game in progress, 
+when you go to unvisited maps you will see the new NPC faces while NPCs you met previously will not be affected 
+until your next game.
 
 Sources of the pictures include Neverwinter Nights portraits found online, searches for baldur's gate and IWD portraits,
 The Super Ultimate Portrait Pack (http://www.moddb.com/games/baldurs-gate-enhanced-edition/addons/super-ultimate-portrait-pack),
- as a last resort I used search engines to round out the collection.   This mod is inspired by other mods that have come before that worked well on classic Baldur's Gate but perhaps do not scale as well on the modern BGEE engine:
+ as a last resort I used search engines to round out the collection.   
+ 
+Baldur's Gate prior to the EE editions had mods that included small portraits for some NPCs.   The pictures in these mods are lower 
+resolution than the ones carefully selected for this mod.  Some of these older mods for classic Baldur's Gate with smaller pictures 
+that directly inspired this project are:
 Gerri's BGT NPC Portraits ( https://kerzenburg.baldurs-gate.eu/downloads.php?id=69 )
 BG1NPC ( http://www.gibberlings3.net/bg1npc/ )
 

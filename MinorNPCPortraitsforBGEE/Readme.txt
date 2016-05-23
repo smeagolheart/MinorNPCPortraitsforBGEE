@@ -14,10 +14,13 @@ match the in game NPC, report that as well for potential inclusion in future upd
 start a new game to get the portraits on NPCs you've already met in game although future NPCs should have their
 portraits.  This mod patches over 600 creatures, future updates from Beamdog may require reinstallation of the mod if
 it modifies any of those characters.  Basically, if there is an update to the game, it's probably a good idea to reinstall this mod.
+Due to the nature of the way the Infinity Engine handles things, if you install this mod on a game in progress, 
+when you go to unvisited maps you will see the new NPC faces while NPCs you met previously will not be affected 
+until your next game.
 
 Sources of the pictures include Neverwinter Nights portraits found online, searches for baldur's gate and IWD portraits,
 The Super Ultimate Portrait Pack (http://www.moddb.com/games/baldurs-gate-enhanced-edition/addons/super-ultimate-portrait-pack),
- as a last resort I used search engines to round out the collection.   
+ and as a last resort I used search engines to round out the collection.   
  
 Baldur's Gate prior to the EE editions had mods that included small portraits for some NPCs.   The pictures in these mods are lower 
 resolution than the ones carefully selected for this mod.  Some of these older mods for classic Baldur's Gate with smaller pictures 
@@ -66,7 +69,8 @@ Thanks everyone you know who you are, I hope you appreciate the hard work of the
 
 Version History:
 V1.1
-- Added over 200 Siege of Dragonspear portraits. Added additional portraits for BGEE.  618 actor portraits.  
+- Added over 200 Siege of Dragonspear portraits, additional portraits for BGEE, and some replacements.  
+  634 actor portraits.  
 
 V.1.0 4 May 16
 - 1st Release.  350 actor portraits.
