@@ -68,12 +68,14 @@ Thanks everyone you know who you are, I hope you appreciate the hard work of the
 ===================================================================================================================
 
 Version History:
-V1.1
-- Added over 200 Siege of Dragonspear portraits, additional portraits for BGEE, and some replacements.  
-  634 actor portraits.  
+V.1.1  23 May 16
+- Added Siege of Dragonspear portraits, additional portraits for BGEE, and replaced some portraits.  
+  632 actor portraits.  
 
 V.1.0 4 May 16
-- 1st Release.  350 actor portraits.
+- 1st Release.  
+  350 actor portraits.
+
 ===================================================================================================================
 forum
 https://forums.beamdog.com/discussion/55237/mod-minor-npc-portraits-for-bgee

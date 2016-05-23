@@ -1,7 +1,8 @@
 BACKUP ~MinorNPCPortraitsforBGEE/backup~
 AUTHOR ~Smeagolheart&bob_veng@forum.baldursgate.com~
-VERSION ~1.1~
+VERSION ~1.2~
 //README ~%MOD_FOLDER%/readme.txt~
+
 
 /*
 pic size: 169x266
@@ -13,56 +14,58 @@ BEGIN ~Minor NPC Portraits for BGEE~
 
 	//Creature name and portrait name match
 	DEFINE_ACTION_MACRO ~Addpic~ BEGIN
-		ACTION_IF FILE_EXISTS_IN_GAME ~%Crename%.cre~ THEN BEGIN
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Crename%.bmp~ THEN BEGIN
-				COPY_EXISTING ~%Crename%.cre~ ~override~
-				WRITE_EVALUATED_ASCII 0x34 ~%Crename%~ #8
-				COPY ~%MOD_FOLDER%/portraits/%Crename%.bmp~ ~override~
-			END
+		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Crename%.bmp~ THEN BEGIN
+			COPY_EXISTING ~%Crename%.cre~ ~override~
+			WRITE_EVALUATED_ASCII 0x34 ~%Crename%~ #8
+			COPY ~%MOD_FOLDER%/portraits/%Crename%.bmp~ ~override~
 		END
 	END
 	
 	//Creature name and portrait name don't match
 	DEFINE_ACTION_MACRO ~Addpic2~ BEGIN
-		ACTION_IF FILE_EXISTS_IN_GAME ~%Crename%.cre~ THEN BEGIN
-			ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Filename%.bmp~ THEN BEGIN
-				COPY_EXISTING ~%Crename%.cre~ ~override~
-				WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
-				ACTION_IF NOT FILE_EXISTS ~override\%Filename%.bmp~ THEN BEGIN
-					COPY ~%MOD_FOLDER%/portraits/%Filename%.bmp~ ~override~
-				END
-			END	ELSE BEGIN     // Re-use existing portraits, just update reference
-				COPY_EXISTING ~%Crename%.cre~ ~override~
-				WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
+		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Filename%.bmp~ THEN BEGIN
+			COPY_EXISTING ~%Crename%.cre~ ~override~
+			WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
+			ACTION_IF NOT FILE_EXISTS ~override\%Filename%.bmp~ THEN BEGIN
+				COPY ~%MOD_FOLDER%/portraits/%Filename%.bmp~ ~override~
 			END
+		END	ELSE BEGIN     // Re-use existing portraits, just update reference
+			COPY_EXISTING ~%Crename%.cre~ ~override~
+			WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
 		END
 	END
 	
 	PRINT ~Please be patient this may take a while...~
+	OUTER_SET s9total=0
 	
 	LOG  ~PHASE 1: 1 Creature, 1 Portrait~
 	OUTER_SET rows_cnt_1=0
 	COPY - ~%MOD_FOLDER%/tbl/table1.tbl~  ~%MOD_FOLDER%/tbl/table1.tbl~
 		COUNT_2DA_ROWS 1 "rows_cnt_1"
-			FOR( cntg=0; cntg<"%rows_cnt_1%"; cntg=cntg+1 ) BEGIN
+			FOR( cntg=0; cntg<"%rows_cnt_1%"; cntg+=1 ) BEGIN
 				READ_2DA_ENTRY cntg  0 1 "Crename"
 				INNER_ACTION BEGIN
-					LAUNCH_ACTION_MACRO ~Addpic~ 
+					ACTION_IF FILE_EXISTS_IN_GAME ~%Crename%.cre~ THEN BEGIN
+						OUTER_SET s9total+=1
+						LAUNCH_ACTION_MACRO ~Addpic~ 
+					END
+				END
 			END
-		END
 	
 	LOG  ~PHASE 2: Multiple Creatures, 1 Portrait~
 	OUTER_SET rows_cnt_2=0
 	COPY - ~%MOD_FOLDER%/tbl/table2.tbl~  ~%MOD_FOLDER%/tbl/table2.tbl~
 		COUNT_2DA_ROWS 1 "rows_cnt_2"
-			FOR( cntg=0; cntg<"%rows_cnt_2%"; cntg=cntg+1 ) BEGIN
+			FOR( cntg=0; cntg<"%rows_cnt_2%"; cntg+=1 ) BEGIN
 				READ_2DA_ENTRY cntg  0 2 "Crename"
-				READ_2DA_ENTRY cntg  1 2 "Filename"
+				READ_2DA_ENTRY cntg  1 2 "Filename"				
 				INNER_ACTION BEGIN
-					LAUNCH_ACTION_MACRO ~Addpic2~ 
+					ACTION_IF FILE_EXISTS_IN_GAME ~%Crename%.cre~ THEN BEGIN
+						OUTER_SET s9total+=1
+						LAUNCH_ACTION_MACRO ~Addpic2~ 
+					END
+				END
 			END
-		END
-		
+	
 	//Count them up :)
-	OUTER_SET s9total=~%rows_cnt_1%~+~%rows_cnt_2%~
 	PRINT ~PATCHED PORTRAITS FOR %s9total% ACTORS~
