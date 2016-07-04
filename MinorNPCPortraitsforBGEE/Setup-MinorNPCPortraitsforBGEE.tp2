@@ -1,20 +1,20 @@
 BACKUP ~MinorNPCPortraitsforBGEE/backup~
 AUTHOR ~Smeagolheart&bob_veng@forum.baldursgate.com~
-VERSION ~1.2~
+VERSION ~1.5~
 //README ~%MOD_FOLDER%/readme.txt~
-
 
 /*
 pic size: 169x266
 */
 
 BEGIN ~Minor NPC Portraits for BGEE~
-	REQUIRE_PREDICATE GAME_IS bgee "This mod requires BG:EE"
+	REQUIRE_PREDICATE GAME_IS ~bgee eet~ "This mod requires BG:EE or EET"
 	DESIGNATED 0
 
 	//Creature name and portrait name match
 	DEFINE_ACTION_MACRO ~Addpic~ BEGIN
 		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Crename%.bmp~ THEN BEGIN
+			PRINT ~PATCHING: %Crename%.cre with PORTRAIT: %Crename%.bmp~
 			COPY_EXISTING ~%Crename%.cre~ ~override~
 			WRITE_EVALUATED_ASCII 0x34 ~%Crename%~ #8
 			COPY ~%MOD_FOLDER%/portraits/%Crename%.bmp~ ~override~
@@ -24,6 +24,7 @@ BEGIN ~Minor NPC Portraits for BGEE~
 	//Creature name and portrait name don't match
 	DEFINE_ACTION_MACRO ~Addpic2~ BEGIN
 		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/portraits/%Filename%.bmp~ THEN BEGIN
+			PRINT ~PATCHING: %Crename%.cre with PORTRAIT: %Filename%.bmp~
 			COPY_EXISTING ~%Crename%.cre~ ~override~
 			WRITE_EVALUATED_ASCII 0x34 ~%Filename%~ #8
 			ACTION_IF NOT FILE_EXISTS ~override\%Filename%.bmp~ THEN BEGIN
@@ -66,6 +67,81 @@ BEGIN ~Minor NPC Portraits for BGEE~
 					END
 				END
 			END
-	
+
 	//Count them up :)
-	PRINT ~PATCHED PORTRAITS FOR %s9total% ACTORS~
+	PRINT ~-------------------------------------------------------------~
+	PRINT ~ APPLIED PORTRAITS TO %s9total% ACTORS~
+	PRINT ~-------------------------------------------------------------~
+
+BEGIN ~NPCs without Portraits Get Random Portraits~
+	REQUIRE_PREDICATE GAME_IS ~bgee eet~ "This mod requires BG:EE or EET"
+	DESIGNATED 100
+			
+	DEFINE_ACTION_MACRO ~GetRandomMale~ BEGIN
+		ACTION_IF male_cnt > 32 THEN BEGIN			// Rewind count back to the first if the last number portrait has been reached
+			OUTER_SET male_cnt=1
+		END
+		PRINT ~PATCHING: %Crename%.cre with RANDOM PORTRAIT: MALE%male_cnt%.bmp~
+		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/randomportraits/MALE%male_cnt%.bmp~ THEN BEGIN
+		COPY ~%MOD_FOLDER%/randomportraits/MALE%male_cnt%.bmp~ ~override~
+		COPY_EXISTING ~%Crename%.cre~ ~override~
+			WRITE_EVALUATED_ASCII 0x34 ~MALE%male_cnt%~ #8
+		END
+	END
+	
+	DEFINE_ACTION_MACRO ~GetRandomFemale~ BEGIN
+		ACTION_IF female_cnt > 26 THEN BEGIN			// Rewind count back to the first if the last number portrait has been reached
+			OUTER_SET female_cnt=1
+		END
+		PRINT ~PATCHING: %Crename%.cre with RANDOM PORTRAIT: FEMALE%female_cnt%.bmp~
+		ACTION_IF FILE_EXISTS ~%MOD_FOLDER%/randomportraits/FEMALE%female_cnt%.bmp~ THEN BEGIN
+		COPY ~%MOD_FOLDER%/randomportraits/FEMALE%female_cnt%.bmp~ ~override~
+		COPY_EXISTING ~%Crename%.cre~ ~override~
+			WRITE_EVALUATED_ASCII 0x34 ~FEMALE%female_cnt%~ #8
+		END
+	END			
+			
+	//Assign Random Portraits
+	OUTER_SET male_cnt = 0
+	OUTER_SET female_cnt = 0
+	OUTER_SET female_cnt = 0
+	OUTER_SET rnd_cnt = 0
+
+	COPY_EXISTING_REGEXP GLOB ~^.+\.cre$~ ~override~
+		READ_STRREF 0x000c Crename ELSE 0
+		READ_ASCII 0x02cc dialoguefile ELSE 0
+		READ_ASCII 0x0034 portraitfile ELSE 0
+		READ_BYTE  0x0237 cresex ELSE 0
+		READ_BYTE  0x0272 crerace ELSE 0
+		READ_SHORT  0x28 animationindex  ELSE 0
+		PATCH_IF ((FILE_EXISTS_IN_GAME ~%dialoguefile%.dlg~) 		AND		// Has a valid dialogue file 
+				  (NOT FILE_EXISTS_IN_GAME ~%portraitfile%.bmp~) 	AND		// Doesn't already have a portrait
+				  (crerace = 1)) BEGIN										// Human
+					PATCH_IF ((cresex = 1) AND									// Male
+							  (animationindex != 50944) AND						// No Boy animation
+							  (animationindex != 45824)) BEGIN					// No Static_Boy animation
+									INNER_ACTION BEGIN										
+										OUTER_SPRINT ~Crename~ ~%SOURCE_RES%~
+										OUTER_SET male_cnt+=1
+										OUTER_SET rnd_cnt+=1
+										LAUNCH_ACTION_MACRO ~GetRandomMale~
+									END
+								END
+					PATCH_IF ((cresex = 2) AND									// Female
+							  (animationindex != 50960) AND						// No Girl animation
+							  (animationindex != 45840)) BEGIN					// No Static_Girl animation
+									INNER_ACTION BEGIN										
+										OUTER_SPRINT ~Crename~ ~%SOURCE_RES%~
+										OUTER_SET female_cnt+=1
+										OUTER_SET rnd_cnt+=1
+										LAUNCH_ACTION_MACRO ~GetRandomFemale~
+									END
+								END								
+		END
+		BUT_ONLY
+			
+	//Count them up :)
+	PRINT ~-------------------------------------------------------------~
+	PRINT ~ APPLIED RANDOM PORTRAITS TO %rnd_cnt% ACTORS~	
+	PRINT ~-------------------------------------------------------------~
+	
