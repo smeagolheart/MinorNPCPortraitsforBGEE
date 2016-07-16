@@ -70,6 +70,9 @@ Thanks everyone you know who you are, I hope you appreciate the hard work of the
 ===================================================================================================================
 
 Version History:
+V1.6
+- Added random portraits based on Anaxie's suggestions. 684 portraits.  58 random portraits.
+
 V1.5
 - Added Random Portrait Placer Component
 - Added 8 additional portraits.  640 total portraits.  58 random portraits.
